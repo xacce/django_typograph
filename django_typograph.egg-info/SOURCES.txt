@@ -1,0 +1,12 @@
+MANIFEST.in
+setup.py
+django_typograph/__init__.py
+django_typograph/apps.py
+django_typograph/fields.py
+django_typograph/models.py
+django_typograph/recievers.py
+django_typograph/views.py
+django_typograph.egg-info/PKG-INFO
+django_typograph.egg-info/SOURCES.txt
+django_typograph.egg-info/dependency_links.txt
+django_typograph.egg-info/top_level.txt
