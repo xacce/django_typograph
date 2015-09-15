@@ -2,47 +2,45 @@
 
 ## Установка
 
-``` pip install django_typograph```
+` pip install django_typograph `
 
 В settings.py INSTALLED_APPS добавить
 
-``` django_typograph ```
+` django_typograph `
 
 ## Использование
 
 Импортировать 
 
-``` from django_typograph.fields import TypographyField```
+` from django_typograph.fields import TypographyField `
 
 Добавить поле в модель
 
-``` 
- _text = models.TextField()
-field_name = TypographyField(source='_text') ```
 
-```
+
+     _text = models.TextField()
+    text = TypographyField(source="_text")
+
 
 Выполнить миграции
 
+## Пример модели
 
-## Пример модели:
+    
+    from django.db import models
+    from django_typograph.fields import TypographyField
+    
+    class TestModel(models.Model):
+        title = models.CharField(max_length=200, verbose_name='Название')
+        _text = models.TextField()
+        text = TypographyField(source='_text')
+    
+        def __unicode__(self):
+            return self.title
+    
+        class Meta:
+            verbose_name = 'TestModel'    
 
-```
-from django.db import models
-from django_typograph.fields import TypographyField
-
-class TestModel(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Название')
-    _text = models.TextField()
-    text = TypographyField(source='_text')
-
-    def __unicode__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'TestModel'
-        
-```
 
 
 
@@ -61,31 +59,41 @@ class TestModel(models.Model):
 ```project_root/project_name/apps/django_typograph.py```
 
 Со след. содержимым
-```
-from django_typograph.apps import DjangoTypographConfig
 
 
-class CustomTypographConfig(DjangoTypographConfig):
-    engines = {
-        'EMT': {
-            'path': 'django_typograph.engine.EMT.driver.typography',
-            'options': {},
-        },
-        'EMT_SAFE': {
-            'path': 'django_typograph.engine.EMT.driver.typography',
-            'options': {
-                'OptAlign.all': 'off',
-                'OptAlign.oa_oquote': 'off',
-                'OptAlign.oa_obracket_coma': 'off',
-                'OptAlign.layout': 'off',
-                'Text.paragraphs': 'off',
-                'Text.auto_links': 'off',
-                'Text.breakline': 'off',
-                'Text.no_repeat_words': 'off',
+
+    
+    from django_typograph.apps import DjangoTypographConfig
+    
+    
+    class CustomTypographConfig(DjangoTypographConfig):
+        engines = {
+            'EMT': {
+                'path': 'django_typograph.engine.EMT.driver.typography',
+                'options': {},
+            },
+            'EMT_SAFE': {
+                'path': 'django_typograph.engine.EMT.driver.typography',
+                'options': {
+                    'OptAlign.all': 'off',
+                    'OptAlign.oa_oquote': 'off',
+                    'OptAlign.oa_obracket_coma': 'off',
+                    'OptAlign.layout': 'off',
+                    'Text.paragraphs': 'off',
+                    'Text.auto_links': 'off',
+                    'Text.breakline': 'off',
+                    'Text.no_repeat_words': 'off',
+                }
             }
         }
-    }
-    default_engine = "EMT"
-```
+        default_engine = "EMT"
+
+## Старые записи
+
+
+Присутствует management команда type_records. Вся ее суть в том, что она просто пересохраняет текущих контент моделей у которых прописано поле TypographyField
+
+---
+
 
 А теперь рисуем сову собственно.
