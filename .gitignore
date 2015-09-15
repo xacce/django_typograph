@@ -4,4 +4,5 @@
 *.pyo
 local_settings.py
 dist
+build
 idea

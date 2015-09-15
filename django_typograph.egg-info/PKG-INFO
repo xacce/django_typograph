@@ -1,8 +1,8 @@
 Metadata-Version: 1.1
 Name: django-typograph
-Version: 1
+Version: 0.1.2
 Summary: Типограф для Django
-Home-page: https://github.com/pypa/django_typograph
+Home-page: https://github.com/xacce/django_typograph
 Author: Xacce
 Author-email: thiscie@gmail.com
 License: MIT
@@ -29,6 +29,9 @@ Description: # Типограф для Django 1.7+
         field_name = TypographyField(source='_text') ```
         
         ```
+        
+        Выполнить миграции
+        
         
         ## Пример модели:
         
@@ -98,7 +101,6 @@ Keywords: r,u,s,s,i,a,n, ,t,y,p,o,g,r,a,p,h, ,l,a,n,g,u,a,g,e
 Platform: UNKNOWN
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
-Classifier: Topic :: Language
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 2.6
 Classifier: Programming Language :: Python :: 2.7

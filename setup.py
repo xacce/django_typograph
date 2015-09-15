@@ -11,9 +11,9 @@ from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-
+print path.join(here, 'README.md')
 # Get the long description from the relevant file
-with open(path.join(here, 'django_typograph', 'README.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -22,13 +22,13 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1',
+    version='0.1.2',
 
     description='Типограф для Django',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/pypa/django_typograph',
+    url='https://github.com/xacce/django_typograph',
 
     # Author details
     author='Xacce',
@@ -45,8 +45,6 @@ setup(
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
-        'Topic :: Language',
-
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
 
@@ -61,7 +59,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=['django_typograph', ],
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's

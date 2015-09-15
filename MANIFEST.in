@@ -1,2 +1,2 @@
 include django_typograph *.py
-include django_typograph/README.markdown
+include README.md
