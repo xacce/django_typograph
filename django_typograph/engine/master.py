@@ -8,8 +8,9 @@ class Master(object):
         self.engine_data = engine_data
 
     def typography(self, text):
-        try:
-            return import_string(self.engine_data.get('path'))(text, self.engine_data.get('options'))
-        except Exception, e:
-            logging.error("Typograph error. Engine: %s. Error: %s" % (self.engine, e))
-            return text
+        if text:
+            try:
+                return import_string(self.engine_data.get('path'))(text, self.engine_data.get('options'))
+            except Exception, e:
+                logging.error("Typograph error. Engine: %s. Error: %s" % (self.engine, e))
+                return text
