@@ -4,14 +4,14 @@ See:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
-from __future__ import unicode_literals
+from __future__ import unicode_literals, print_function
 from setuptools import setup, find_packages
 
 from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-print path.join(here, 'README.md')
+print(path.join(here, 'README.md'))
 # Get the long description from the relevant file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
