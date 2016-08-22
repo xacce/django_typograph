@@ -12,5 +12,8 @@ class Master(object):
             try:
                 return import_string(self.engine_data.get('path'))(text, self.engine_data.get('options'))
             except Exception, e:
-                logging.error("Typograph error. Engine: %s. Error: %s" % (self.engine, e))
+                if self.engine:
+                    logging.error("Typograph error. Engine: %s. Error: %s" % (self.engine, e))
+                else:
+                    logging.error("Typograph error. Error: %s" % e)
                 return text
