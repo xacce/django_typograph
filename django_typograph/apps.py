@@ -1,8 +1,9 @@
 from django.apps import AppConfig
-from django.apps import apps
-from django_typograph import fields
+from django.utils.module_loading import import_string
 from django_typograph import recievers
 from django.db.models.signals import pre_save
+from django.apps import apps
+from django.conf import settings
 
 
 class DjangoTypographConfig(AppConfig):
@@ -10,11 +11,11 @@ class DjangoTypographConfig(AppConfig):
 
     engines = {
         'EMT': {
-            'path': 'django_typograph.engine.EMT.driver.typography',
+            'path': 'django_typograph.engine.EMT.driver.Driver',
             'options': {},
         },
         'EMT_SAFE': {
-            'path': 'django_typograph.engine.EMT.driver.typography',
+            'path': 'django_typograph.engine.EMT.driver.Driver',
             'options': {
                 'OptAlign.all': 'off',
                 'OptAlign.oa_oquote': 'off',
@@ -28,22 +29,34 @@ class DjangoTypographConfig(AppConfig):
         }
     }
 
-    default_engine = "EMT"
-
-    def get_engine_for(self, field):
-        engine = field.engine if field.engine else self.default_engine
-        engine_data = self.engines.get(engine)
-        engine_data['options'].update(field.options)
-
-        return engine_data
+    default_engine = "EMT_SAFE"
 
     def ready(self):
-        self.t_models = set([])
-        for m in apps.get_models(include_auto_created=True):
-            for f in m._meta.fields:
-                if not isinstance(f, fields.TypographyField):
-                    continue
-                self.t_models.add(m)
+        self._models = dict()
+        self._engines = {}
+        for name, config in self.engines.items():
+            self._engines[name] = import_string(config['path'])(config.get('options'))
 
-        for m in self.t_models:
-            pre_save.connect(recievers.update, m)
+        for model, fields in getattr(settings, 'DJANGO_TYPOGRAPH_MODELS', {}).items():
+            model = apps.get_model(model)
+            self._models[model] = {}
+            for field in fields:
+                if hasattr(field, '__iter__'):
+                    field, engine = field
+                else:
+                    engine = self.default_engine
+
+                self._models[model][field] = self._engines[engine]
+
+                pre_save.connect(recievers.update, model)
+
+    def apply(self, instance):
+        model = instance.__class__
+        if model not in self._models:
+            return
+
+        for field, engine in self._models[model].items():
+            setattr(instance, field, engine.apply(getattr(instance, field)))
+
+    def apply_for_text(self, text, engine=None):
+        return self._engines[engine or self.default_engine].apply(unicode(text))
